@@ -33,6 +33,8 @@ Daraus leiteten wir fünf Architekturprinzipien ab:
 4. **Unified Build System**: CMake als Meta-Buildsystem für alle Varianten und Artefakte.
 5. **Quality Gates als Testselektion**: Verschiedene Teststufen sind lediglich unterschiedliche Pytest-Marker-Selektionen.
 
+## Die Lösung: Unsere SPLE-Plattform
+
 Mit diesen Prinzipien im Kopf entwarfen wir eine modulare Internal Developer Platform (IDP) für Software Product Line Engineering (SPLE). Unsere SPLE-Plattform verfolgt vier **Hauptziele**:
 
 - **Shift Left**: Tests so früh wie möglich im Entwicklungsprozess - nicht erst im Nightly Build, sondern bereits beim Pull Request.
@@ -40,9 +42,7 @@ Mit diesen Prinzipien im Kopf entwarfen wir eine modulare Internal Developer Pla
 - **Reuse**: Unterstützung mehrerer Kundenprojekte mit gemeinsamen Komponenten und Variantenmanagement - eine Plattform für die gesamte Software-Produktlinie.
 - **Automation**: Automatisierte Erzeugung aller benötigten Build-Artefakte und Reports.
 
-## Die Lösung: Pytest als universelles Test-Framework
-
-Das Herzstück der SPLE-Plattform ist die Nutzung von Pytest als universelles Test-Framework für *alle* Quality Gates - vom Build über Unit-Tests bis hin zu Integrationstests. Jede Teststufe wird durch einen Pytest-Marker repräsentiert:
+Das Herzstück der Plattform ist die Nutzung von Pytest als universelles Test-Framework für *alle* Quality Gates - vom Build über Unit-Tests bis hin zu Integrationstests. Jede Teststufe wird durch einen Pytest-Marker repräsentiert:
 
 ```python
 class Test_MyVariant:
@@ -71,7 +71,7 @@ Die Quality-Gate-Auswahl erfolgt dann durch den Trigger-Typ:
 
 Damit werden Quality Gates von undurchsichtiger Pipeline-Magie zu transparenten, reproduzierbaren Testselektionen. Ein Entwickler, der einen Fehler im CI nachstellen möchte, führt lokal exakt denselben Pytest-Aufruf aus - kein Pipeline-Debugging, kein "works on my machine".
 
-*Abbildung 1: SPLE-Pipeline mit Quality-Gate-Selektion und paralleler Testausführung. Quelle: eigene Darstellung*
+Abbildung 1 zeigt unseren Ansatz als Flussdiagramm: Die Pipeline wählt basierend auf dem Trigger-Typ (Pull Request, Main-Branch-Push, Nightly Build) lediglich ein Quality Gate als Menge von Pytest-Markern aus und orchestriert die parallele Testausführung über mehrere Agents.
 
 ```mermaid
 flowchart TD
@@ -113,9 +113,11 @@ flowchart TD
     class M2 transparent
 ```
 
-## Der Technologie-Stack
+*Abbildung 1: SPLE-Pipeline mit Quality-Gate-Selektion und paralleler Testausführung*
 
-Unsere SPLE-Plattform (Software Product Line Engineering) setzt auf einen bewusst schlanken Stack:
+### Der Technologie-Stack
+
+Die SPLE-Plattform setzt auf einen bewusst schlanken Stack:
 
 - **Scoop**: Windows-Paketmanager für die automatische Installation aller Toolchains - kein manuelles Setup, kein "bei mir fehlt Tool X".
 - **CMake + Ninja**: CMake als Meta-Buildsystem generiert performante Ninja-Build-Dateien für alle Varianten. Ein einheitliches Buildsystem statt fragmentierter Makefiles.
@@ -157,6 +159,6 @@ Der Schlüssel lag nicht in einem neuen Tool, sondern in einer architektonischen
 
 ## Kurzbiografie
 
-**Karsten Günther** arbeitet als Senior Platform Engineer bei der Marquardt GmbH im Rhein-Main-Team. Mit über 20 Jahren Erfahrung in der Automobilindustrie - von Embedded C über Build-Systeme bis hin zu CI/CD-Plattformen - konzentriert er sich auf Software Product Line Engineering und Internal Developer Platforms.
+**Karsten Günther** ist seit 25 Jahren leidenschaftlicher Softwareingenieur und kann auf Erfahrungen im Bereich der Signalverarbeitung und eingebetteten Echtzeitsysteme, in der Automatisierung von Entwicklungsprozessen, sowie in der Entwicklung von Methoden, Werkzeugen und Pipelines für Continuous Integration (CI) zurückgreifen. Er war und ist als Ingenieur, Tester und Architekt in der Automobilbranche unterwegs und arbeitet zurzeit als Product Owner der SPLE-Plattform im Rhein-Main Team (RMT) der Marquardt GmbH, wo er sich intensiv mit internen Entwicklungsplattformen und Software Product Line Engineering (SPLE) beschäftigt.
 
-**Alexandru Maxiniuc** arbeitet als Senior Platform Engineer bei der Marquardt GmbH im Rhein-Main-Team. Er bringt langjährige Erfahrung in der Embedded-Softwareentwicklung und im Bereich Build-Systeme und Automatisierung in der Automobilbranche mit.
+**Alexandru Maxiniuc** bringt fast 20 Jahre Erfahrung in der Automobilindustrie mit, spezialisiert auf sicherheitskritische eingebettete Software für Bremssysteme. Er begeistert sich für eingebettete Software, Build-Systeme und Software Product Line Engineering. Alexandru hat nachweislich innovative Lösungen entwickelt, kleine Softwareteams geleitet und die Einführung effizienter Entwicklungspraktiken vorangetrieben. Er entwickelt aktiv Open-Source-Tools und teilt sein Wissen gerne, um Teams bei der Verbesserung ihrer Software-Engineering-Fähigkeiten zu unterstützen - in seiner aktuellen Position als Plattformarchitekt der SPLE-Plattform im Rhein-Main Team (RMT) der Marquardt GmbH.
