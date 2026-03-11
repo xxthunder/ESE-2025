@@ -8,7 +8,7 @@ Testautomatisierung über alle Teststufen hinweg ist in der Automobilindustrie u
 
 ## Das Problem: Testlogik am falschen Ort
 
-Unsere CI-Reise begann 2005 in der Automobilzulieferindustrie. Der Ausgangspunkt war ernüchternd: Kein einziger Unit-Test im Repository. Getestet wurde explorativ am Target - im Labor mit Messtechnik und Oszilloskop oder direkt im Fahrzeug. Keine Testautomatisierung, nur Nightly Builds mit dem höchsten Qualitätskriterium "Software linkbar". Wir nannten diesen Zustand "Continuous Kind im Brunnen" - reaktiv statt präventiv.
+Unsere CI-Reise begann 2005 in der Automobilzulieferindustrie. Der Ausgangspunkt war ernüchternd: Kein einziger Unit-Test im Repository. Getestet wurde explorativ am Target - im Labor oder direkt im Fahrzeug, mit Messtechnik, Debugger und Oszilloskop. Keine Testautomatisierung, nur Nightly Builds mit dem höchsten Qualitätskriterium "Software linkbar". Wir nannten diesen Zustand "Continuous Kind im Brunnen" - reaktiv statt präventiv.
 
 Die ersten Verbesserungsversuche brachten Unit-Tests auf Basis eines eigenen CUnit-Frameworks und Jenkins als CI-Server. Doch mit wachsenden Anforderungen - SIL-Tests (Software-in-the-Loop), HIL-Tests (Hardware-in-the-Loop), statische Codeanalyse - entstand eine fatale Entwicklung: Für jede Testart wurde ein eigener Jenkins-Freestyle-Job erstellt, später wurden diese in immer komplexere Groovy-Pipelines konsolidiert.
 
@@ -33,9 +33,16 @@ Daraus leiteten wir fünf Architekturprinzipien ab:
 4. **Unified Build System**: CMake als Meta-Buildsystem für alle Varianten und Artefakte.
 5. **Quality Gates als Testselektion**: Verschiedene Teststufen sind lediglich unterschiedliche Pytest-Marker-Selektionen.
 
+Mit diesen Prinzipien im Kopf entwarfen wir eine modulare Internal Developer Platform (IDP) für Software Product Line Engineering (SPLE). Unsere SPLE-Plattform verfolgt vier **Hauptziele**:
+
+- **Shift Left**: Tests so früh wie möglich im Entwicklungsprozess - nicht erst im Nightly Build, sondern bereits beim Pull Request.
+- **Continuous Integration**: Schnelles, zuverlässiges Feedback auf Pull Requests und den Develop-Branch.
+- **Reuse**: Unterstützung mehrerer Kundenprojekte mit gemeinsamen Komponenten und Variantenmanagement - eine Plattform für die gesamte Software-Produktlinie.
+- **Automation**: Automatisierte Erzeugung aller benötigten Build-Artefakte und Reports.
+
 ## Die Lösung: Pytest als universelles Test-Framework
 
-Das Herzstück unserer Lösung ist die Nutzung von Pytest als universelles Test-Framework für *alle* Quality Gates - vom Build über Unit-Tests bis hin zu Integrationstests. Jede Teststufe wird durch einen Pytest-Marker repräsentiert:
+Das Herzstück der SPLE-Plattform ist die Nutzung von Pytest als universelles Test-Framework für *alle* Quality Gates - vom Build über Unit-Tests bis hin zu Integrationstests. Jede Teststufe wird durch einen Pytest-Marker repräsentiert:
 
 ```python
 class Test_MyVariant:
