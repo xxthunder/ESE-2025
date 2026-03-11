@@ -73,6 +73,10 @@ The presentation is structured in 6 main sections:
 5. **Was haben wir falsch gemacht** - Lessons learned from mistakes
 6. **Wie geht es richtig** - The correct architecture and implementation
 
+## Conference Proceedings Article
+
+The `docs/article/index.md` file contains the written conference proceedings contribution for the ESE Kongress 2025. It provides a detailed written companion to the presentation, covering the CI journey, architectural principles, solution details (Python/Pytest quality gates, CMake build system, Jenkins orchestration), and lessons learned. This article is intended for publication in the conference proceedings.
+
 ## Technology Stack
 
 ### Presentation Framework
