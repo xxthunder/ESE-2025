@@ -22,7 +22,8 @@
         "mushan.vscode-paste-image",
         "sandcastle.vscode-open",
         "mhutchie.git-graph",
-        "felipecaputo.git-project-manager"
+        "felipecaputo.git-project-manager",
+        "shd101wyy.markdown-preview-enhanced"
       ],
       "settings": {
         "editor.formatOnSave": true,
