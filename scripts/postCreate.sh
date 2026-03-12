@@ -23,4 +23,25 @@ npm install -g npm@latest
 echo "Installing npm dependencies..."
 npm install
 
+# PDF generation dependencies
+echo "Installing PDF generation tools..."
+sudo apt-get update && sudo apt-get install -y --no-install-recommends \
+    pandoc \
+    python3-pip \
+    fonts-noto-color-emoji \
+    libpango-1.0-0 \
+    libpangocairo-1.0-0 \
+    libgdk-pixbuf2.0-0 \
+    libffi-dev \
+    libcairo2
+
+fc-cache -f
+python3 -m pip install --user --break-system-packages weasyprint
+npm install -g @mermaid-js/mermaid-cli
+
+# Ensure ~/.local/bin is in PATH for weasyprint
+if ! grep -q '.local/bin' ~/.bashrc 2>/dev/null; then
+    echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+fi
+
 echo "Post-create setup complete!"
