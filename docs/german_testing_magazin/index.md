@@ -4,15 +4,15 @@ Karsten Günther, Alexandru Maxiniuc - Marquardt GmbH
 
 ## Vorspann
 
-Testautomatisierung über alle Teststufen hinweg ist in der Automobilindustrie unverzichtbar. Doch was passiert, wenn die gesamte Testlogik in CI-Pipeline-DSL implementiert wird? In diesem Beitrag berichten wir aus 20 Jahren Praxis in der Embedded-Softwareentwicklung, wie wir von einem monolithischen "Jenkinstein" - tausenden Zeilen Groovy-Code, der Build-, Test- und Deployment-Logik vermischte - zu einer modularen Testplattform auf Basis von Python und Pytest gefunden haben. Der Schlüssel: Quality Gates als einfache Pytest-Marker-Selektion, die lokal und in CI identisch funktionieren.
+Testautomatisierung über alle Teststufen hinweg ist in der Automobilindustrie unverzichtbar. Doch was passiert, wenn die gesamte Testlogik in CI-Pipeline-DSL implementiert wird? In diesem Beitrag berichten wir aus 20 Jahren Praxis in der Embedded-Softwareentwicklung, wie wir von einem monolithischen "Jenkinstein" mit tausenden Zeilen Groovy-Code, der Build-, Test- und Deployment-Logik vermischte, zu einer modularen Testplattform auf Basis von Python und Pytest gefunden haben. Der Schlüssel: Quality Gates als einfache Pytest-Marker-Selektion, die lokal und in CI identisch funktionieren.
 
 ## Das Problem: Testlogik am falschen Ort
 
-Unsere CI-Reise begann 2005 in der Automobilzulieferindustrie. Der Ausgangspunkt war ernüchternd: Kein einziger Unit-Test im Repository. Getestet wurde explorativ am Target - im Labor oder direkt im Fahrzeug, mit Messtechnik, Debugger und Oszilloskop. Keine Testautomatisierung, nur Nightly Builds mit dem höchsten Qualitätskriterium "Software linkbar". Wir nannten diesen Zustand "Continuous Kind im Brunnen" - reaktiv statt präventiv.
+Unsere CI-Reise begann 2005 in der Automobilzulieferindustrie. Der Ausgangspunkt war ernüchternd: Kein einziger Unit-Test im Repository. Getestet wurde explorativ im Target, im Labor oder direkt im Fahrzeug, mit Messtechnik, Debugger und Oszilloskop. Keine Testautomatisierung, nur Nightly Builds mit dem höchsten Qualitätskriterium "Software linkbar". Wir nannten diesen Zustand "Continuous Kind im Brunnen": reaktiv statt präventiv.
 
-Die ersten Verbesserungsversuche brachten Unit-Tests auf Basis eines eigenen CUnit-Frameworks und Jenkins als CI-Server. Doch mit wachsenden Anforderungen - SIL-Tests (Software-in-the-Loop), HIL-Tests (Hardware-in-the-Loop), statische Codeanalyse - entstand eine fatale Entwicklung: Für jede Testart wurde ein eigener Jenkins-Freestyle-Job erstellt, später wurden diese in immer komplexere Groovy-Pipelines konsolidiert.
+Die ersten Verbesserungsversuche brachten Unit-Tests auf Basis eines eigenen CUnit-Frameworks und Jenkins als CI-Server. Doch mit weiteren Teststufen wie statischer Codeanalyse, Softwareintegrationstests und Systemintegrationstests passierte eine fatale Entwicklung: für jede Teststufe wurde ein eigener Jenkins-Freestyle-Job erstellt, später wurden diese in immer komplexere Groovy-Pipelines konsolidiert.
 
-Das Ergebnis war unser "Jenkinstein": Ein Monster aus zehntausenden Zeilen Jenkins-Pipeline-DSL, das als Buildsystem, Testsystem, Deploymentsystem und Monitoringsystem gleichzeitig fungierte. Die Pipeline enthielt die gesamte Geschäftslogik - welche Varianten gebaut werden, welche Tests für welche Teststufe laufen, wie Ergebnisse aggregiert werden. Shared Libraries und Plugins machten das Chaos komplett.
+Das Ergebnis war unser "Jenkinstein", ein Monster aus zehntausenden Zeilen Jenkins-Pipeline-DSL, das als Buildsystem, Testsystem, Deploymentsystem und Monitoringsystem gleichzeitig fungierte. Die Pipeline enthielt die gesamte Geschäftslogik: welche Varianten gebaut werden, welche Tests für welche Teststufe laufen, wie Ergebnisse aggregiert werden.
 
 Die Konsequenzen waren gravierend:
 
@@ -23,11 +23,11 @@ Die Konsequenzen waren gravierend:
 
 ## Die Erkenntnis: CI und lokal unterscheiden sich nur in der Orchestrierung
 
-Der Wendepunkt kam mit einer simplen Erkenntnis: CI-Umgebungen und lokale Entwicklermaschinen unterscheiden sich primär in der *Orchestrierung*, nicht in der eigentlichen Test- und Build-Ausführung. Ein Build, ein Unit-Test, eine statische Analyse - all das sollte mit denselben Kommandos funktionieren, egal ob lokal oder auf einem CI-Agent.
+Der Wendepunkt kam mit einer simplen Erkenntnis: CI-Umgebungen und lokale Entwicklermaschinen unterscheiden sich primär in der *Orchestrierung*, nicht in der eigentlichen Test- und Buildausführung. Ein Build, ein Unit-Test, eine statische Analyse - all das sollte mit denselben Kommandos funktionieren, egal ob lokal oder auf einem CI-Agent.
 
 Daraus leiteten wir fünf Architekturprinzipien ab:
 
-1. **Separation of Concerns**: Die Pipeline orchestriert nur - keine Geschäftslogik in Pipeline-DSL.
+1. **Separation of Concerns**: Die Pipeline orchestriert nur, keine Geschäftslogik in Pipeline-DSL.
 2. **Local-First Development**: Jenkins führt exakt dieselben Kommandos aus, die Entwickler lokal nutzen.
 3. **Bootstrapping**: Build-Skripte lösen alle Abhängigkeiten selbst auf.
 4. **Unified Build System**: CMake als Meta-Buildsystem für alle Varianten und Artefakte.
@@ -35,14 +35,14 @@ Daraus leiteten wir fünf Architekturprinzipien ab:
 
 ## Die Lösung: Unsere SPLE-Plattform
 
-Mit diesen Prinzipien im Kopf entwarfen wir eine modulare Internal Developer Platform (IDP) für Software Product Line Engineering (SPLE). Unsere SPLE-Plattform verfolgt vier **Hauptziele**:
+Mit diesen Prinzipien im Kopf entwarfen wir eine modulare interne Entwicklerplattform (auch IDP: Internal Developer Platform) für Software Product Line Engineering (SPLE). Unsere SPLE-Plattform verfolgt vier **Hauptziele**:
 
-- **Shift Left**: Tests so früh wie möglich im Entwicklungsprozess - nicht erst im Nightly Build, sondern bereits beim Pull Request.
-- **Continuous Integration**: Schnelles, zuverlässiges Feedback auf Pull Requests und den Develop-Branch.
-- **Reuse**: Unterstützung mehrerer Kundenprojekte mit gemeinsamen Komponenten und Variantenmanagement - eine Plattform für die gesamte Software-Produktlinie.
+- **Shift Left**: Tests so früh wie möglich im Entwicklungsprozess, nicht erst im Nightly Build, sondern bereits beim Pull Request.
+- **Continuous Integration**: Schnelles, zuverlässiges Feedback für Pull Requests und Integrationsbranches.
+- **Reuse**: Unterstützung mehrerer Kundenprojekte mit gemeinsamen Komponenten und Variantenmanagement, eine Plattform für die gesamte Software-Produktlinie.
 - **Automation**: Automatisierte Erzeugung aller benötigten Build-Artefakte und Reports.
 
-Das Herzstück der Plattform ist die Nutzung von Pytest als universelles Test-Framework für *alle* Quality Gates - vom Build über Unit-Tests bis hin zu Integrationstests. Jede Teststufe wird durch einen Pytest-Marker repräsentiert:
+Das Herzstück der Plattform ist die Nutzung von Pytest als universelles Test-Framework für *alle* Quality Gates: vom Build über Unit-Tests bis hin zu Integrationstests. Jede Teststufe wird durch einen Pytest-Marker repräsentiert:
 
 ```python
 class Test_MyVariant:
@@ -69,9 +69,9 @@ Die Quality-Gate-Auswahl erfolgt dann durch den Trigger-Typ:
 - **Develop-Branch**: `pytest -m "build or unittests or integration"` - vollständige Testsuite
 - **Nightly Build**: `pytest -m "build or unittests or integration or longrunning"` - inklusive langläufiger Tests
 
-Damit werden Quality Gates von undurchsichtiger Pipeline-Magie zu transparenten, reproduzierbaren Testselektionen. Ein Entwickler, der einen Fehler im CI nachstellen möchte, führt lokal exakt denselben Pytest-Aufruf aus - kein Pipeline-Debugging, kein "works on my machine".
+Damit werden Quality Gates von undurchsichtiger Pipeline-Magie zu transparenten, reproduzierbaren Testselektionen. Ein Entwickler, der einen Fehler im CI nachstellen möchte, führt lokal exakt denselben Pytest-Aufruf aus, kein Pipeline-Debugging, kein "works on my machine".
 
-Abbildung 1 zeigt unseren Ansatz als Flussdiagramm: Die Pipeline wählt basierend auf dem Trigger-Typ (Pull Request, Main-Branch-Push, Nightly Build) lediglich ein Quality Gate als Menge von Pytest-Markern aus und orchestriert die parallele Testausführung über mehrere Agents.
+Abbildung 1 zeigt unseren Ansatz als Flussdiagramm: Die Pipeline wählt basierend auf dem Trigger-Typ (Pull Request, Branch-Push, Nightly Build) lediglich ein Quality Gate als Menge von Pytest-Markern aus und orchestriert die parallele Testausführung über mehrere Agents.
 
 ```mermaid
 flowchart TD
@@ -122,12 +122,12 @@ Die SPLE-Plattform setzt auf einen bewusst schlanken Stack:
 - **Scoop**: Windows-Paketmanager für die automatische Installation aller Toolchains - kein manuelles Setup, kein "bei mir fehlt Tool X".
 - **CMake + Ninja**: CMake als Meta-Buildsystem generiert performante Ninja-Build-Dateien für alle Varianten. Ein einheitliches Buildsystem statt fragmentierter Makefiles.
 - **Python + Pytest**: Alle Quality Gates sind Pytest-Tests mit Markern. Die Testlogik ist wartbarer Python-Code statt Groovy-DSL.
-- **Pypeline**: Unser CI-agnostischer Pipeline-Runner. Pipeline-Schritte werden als Python-Klassen implementiert und in einer YAML-Datei konfiguriert - dieselbe Pipeline läuft auf dem Entwickler-Laptop, in Jenkins und in GitHub Actions.
-- **Jenkins**: Nur noch dünne Orchestrierungsschicht. Der Jenkinsfile ist minimal - er ruft Pytest mit den passenden Markern auf, mehr nicht.
+- **Pypeline**: Unser CI-agnostischer Pipeline-Runner. Pipeline-Schritte werden als Python-Klassen implementiert und in einer YAML-Datei konfiguriert. Dieselbe Pipeline läuft auf dem Entwickler-Laptop, in Jenkins und in GitHub Actions.
+- **Jenkins**: Nur noch dünne Orchestrierungsschicht. Der Jenkinsfile ist minimal. Er ruft Pytest mit den passenden Markern auf, mehr nicht.
 
 Das Entscheidende ist die konsequente Trennung: Die Pipeline weiß *wann* und *wo* Tests laufen (Orchestrierung), aber nicht *was* und *wie* getestet wird (Geschäftslogik).
 
-## Ehrliche Learnings: Was wir dabei gelernt haben
+## Was wir dabei gelernt haben
 
 **Das "Law of the Instrument" ist real.** Wer einen Hammer hat, für den sieht alles wie ein Nagel aus. Jenkins ist ein hervorragendes Orchestrierungswerkzeug, aber kein Buildsystem und kein Test-Framework. Wir haben Jahre gebraucht, um diese Grenze zu erkennen und konsequent einzuhalten.
 
@@ -151,11 +151,13 @@ Der Schlüssel lag nicht in einem neuen Tool, sondern in einer architektonischen
 
 [3] Jenkins Pipeline Best Practices: https://www.jenkins.io/doc/book/pipeline/pipeline-best-practices/
 
-[4] Internal Developer Platform: https://internaldeveloperplatform.org/
+[4] Scoop Windows Package Manager: https://scoop.sh/
 
-[5] Scoop Windows Package Manager: https://scoop.sh/
+[5] Pypeline: https://pypeline-runner.readthedocs.io/en/latest/
 
-[6] Scaled Agile Framework (SAFe): https://www.scaledagileframework.com/
+[6] SPLED: https://github.com/avengineers/SPLed
+
+[7] SPL Core: https://spl-core.readthedocs.io/en/latest/
 
 ## Kurzbiografie
 
