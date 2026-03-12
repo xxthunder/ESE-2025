@@ -145,22 +145,34 @@ Der Schlüssel lag nicht in einem neuen Tool, sondern in einer architektonischen
 
 ## Referenzen
 
-[1] Pytest: https://docs.pytest.org/en/
+[1] Internal Developer Platform (IDP): https://en.wikipedia.org/wiki/Internal_developer_platform
 
-[2] CMake: https://cmake.org/
+[2] Software Product Line Engineering (SPLE): https://en.wikipedia.org/wiki/Software_product_line
 
-[3] Jenkins Pipeline Best Practices: https://www.jenkins.io/doc/book/pipeline/pipeline-best-practices/
+[3] Pytest: https://docs.pytest.org/en/
 
-[4] Scoop Windows Package Manager: https://scoop.sh/
+[4] CMake: https://cmake.org/
 
-[5] Pypeline: https://pypeline-runner.readthedocs.io/en/latest/
+[5] Jenkins: https://www.jenkins.io/
 
-[6] SPLED: https://github.com/avengineers/SPLed
+[6] Scoop Windows Package Manager: https://scoop.sh/
 
-[7] SPL Core: https://spl-core.readthedocs.io/en/latest/
+[7] Scaled Agile Framework (SAFe): https://www.scaledagileframework.com/
+
+[8] Pypeline: https://pypeline-runner.readthedocs.io/en/latest/
+
+[9] SPLed: https://github.com/avengineers/SPLed
+
+[10] SPL Core: https://spl-core.readthedocs.io/en/latest/
 
 ## Kurzbiografie
 
-**Karsten Günther** ist seit 25 Jahren leidenschaftlicher Softwareingenieur und kann auf Erfahrungen im Bereich der Signalverarbeitung und eingebetteten Echtzeitsysteme, in der Automatisierung von Entwicklungsprozessen, sowie in der Entwicklung von Methoden, Werkzeugen und Pipelines für Continuous Integration (CI) zurückgreifen. Er war und ist als Ingenieur, Tester und Architekt in der Automobilbranche unterwegs und arbeitet zurzeit als Product Owner der SPLE-Plattform im Rhein-Main Team (RMT) der Marquardt GmbH, wo er sich intensiv mit internen Entwicklungsplattformen und Software Product Line Engineering (SPLE) beschäftigt.
+<div style="display: flex; align-items: flex-start; gap: 1em; margin-bottom: 1em;">
+<img src="../../images/karsten.png" alt="Karsten Günther" style="width: 200px; flex-shrink: 0;">
+<p><strong>Karsten Günther</strong> ist seit 25 Jahren leidenschaftlicher Softwareingenieur und kann auf Erfahrungen im Bereich der Signalverarbeitung und eingebetteten Echtzeitsysteme, in der Automatisierung von Entwicklungsprozessen, sowie in der Entwicklung von Methoden, Werkzeugen und Pipelines für Continuous Integration (CI) zurückgreifen. Er war und ist als Ingenieur, Tester und Architekt in der Automobilbranche unterwegs und arbeitet zurzeit als Product Owner der SPLE-Plattform im Rhein-Main Team (RMT) der Marquardt GmbH, wo er sich intensiv mit internen Entwicklungsplattformen und Software Product Line Engineering (SPLE) beschäftigt. Kontakt: <a href="https://www.linkedin.com/in/karnangue/">LinkedIn</a></p>
+</div>
 
-**Alexandru Maxiniuc** bringt fast 20 Jahre Erfahrung in der Automobilindustrie mit, spezialisiert auf sicherheitskritische eingebettete Software für Bremssysteme. Er begeistert sich für eingebettete Software, Build-Systeme und Software Product Line Engineering. Alexandru hat nachweislich innovative Lösungen entwickelt, kleine Softwareteams geleitet und die Einführung effizienter Entwicklungspraktiken vorangetrieben. Er entwickelt aktiv Open-Source-Tools und teilt sein Wissen gerne, um Teams bei der Verbesserung ihrer Software-Engineering-Fähigkeiten zu unterstützen - in seiner aktuellen Position als Plattformarchitekt der SPLE-Plattform im Rhein-Main Team (RMT) der Marquardt GmbH.
+<div style="display: flex; flex-direction: row-reverse; align-items: flex-start; gap: 1em; margin-bottom: 1em;">
+<img src="../../images/amx_profile_2026.jpg" alt="Alexandru Maxiniuc" style="width: 200px; flex-shrink: 0;">
+<p><strong>Alexandru Maxiniuc</strong> bringt fast 20 Jahre Erfahrung in der Automobilindustrie mit, spezialisiert auf sicherheitskritische eingebettete Software für Bremssysteme. Er begeistert sich für eingebettete Software, Build-Systeme und Software Product Line Engineering. Alexandru hat nachweislich innovative Lösungen entwickelt, kleine Softwareteams geleitet und die Einführung effizienter Entwicklungspraktiken vorangetrieben. Er entwickelt aktiv Open-Source-Tools und teilt sein Wissen gerne, um Teams bei der Verbesserung ihrer Software-Engineering-Fähigkeiten zu unterstützen - in seiner aktuellen Position als Plattformarchitekt der SPLE-Plattform im Rhein-Main Team (RMT) der Marquardt GmbH. Kontakt: <a href="https://maxiniuc.com/">maxiniuc.com</a></p>
+</div>
