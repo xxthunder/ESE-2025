@@ -48,28 +48,32 @@ Das Herzstück der Plattform ist die Nutzung von Pytest als universelles Test-Fr
 class Test_MyVariant:
     variant = "MyVariant"
 
-    @pytest.mark.build
-    def test_build(self):
-        spl_build = SplBuild(variant=self.variant,
-                             build_kit="prod", target="build")
-        result = spl_build.execute()
-        assert result == 0, "Build fehlgeschlagen"
-
     @pytest.mark.unittests
+    @pytest.mark.gate_develop_pr
+    @pytest.mark.gate_develop_push
+    @pytest.mark.gate_develop_nightly
     def test_unittests(self):
         spl_build = SplBuild(variant=self.variant,
                              build_kit="test", target="unittests")
-        result = spl_build.execute()
-        assert result == 0, "Unit-Tests fehlgeschlagen"
+        exit_code = spl_build.execute()
+        assert exit_code == 0, "Unit tests failed"
+
+    @pytest.mark.integrationtests
+    @pytest.mark.gate_develop_nightly
+    def test_integrationtests(self):
+        spl_build = SplBuild(variant=self.variant,
+                             build_kit="test", target="integrationtests")
+        exit_code = spl_build.execute()
+        assert exit_code == 0, "Integration tests failed"
 ```
 
 Die Quality-Gate-Auswahl erfolgt dann durch den Trigger-Typ:
 
-- **Pull Request**: `pytest -m "build or unittests"` - schnelle Tests für schnelles Feedback
-- **Develop-Branch**: `pytest -m "build or unittests or integration"` - vollständige Testsuite
-- **Nightly Build**: `pytest -m "build or unittests or integration or longrunning"` - inklusive langläufiger Tests
+- **Pull Request**: `pytest -m "gate_develop_pr"` - schnelle Tests für schnelles Feedback
+- **Develop-Branch**: `pytest -m "gate_develop_push"` - vollständige Testsuite
+- **Nightly Build**: `pytest -m "gate_develop_nightly"` - inklusive langläufiger Tests
 
-Damit werden Quality Gates von undurchsichtiger Pipeline-Magie zu transparenten, reproduzierbaren Testselektionen. Ein Entwickler, der einen Fehler im CI nachstellen möchte, führt lokal exakt denselben Pytest-Aufruf aus, kein Pipeline-Debugging, kein "works on my machine".
+Damit werden Quality Gates von undurchsichtiger Pipeline-Magie zu transparenten, reproduzierbaren Testselektionen. Ein Entwickler, der einen Fehler im CI nachstellen möchte, führt lokal exakt denselben Pytest-Aufruf aus, kein Pipeline-Debugging, kein "works on my machine". Unser Demoprojekt SPLed (https://github.com/avengineers/SPLed) benutzt exakt diesen Ansatz. Jede Variante im Ordner 'variants' definiert in ihrer Testklasse verschiedene Testtypen (Unittests, Integrationstests) und weist diesen entsprechende Quality Gates zu.
 
 Abbildung 1 zeigt unseren Ansatz als Flussdiagramm: Die Pipeline wählt basierend auf dem Trigger-Typ (Pull Request, Branch-Push, Nightly Build) lediglich ein Quality Gate als Menge von Pytest-Markern aus und orchestriert die parallele Testausführung über mehrere Agents.
 

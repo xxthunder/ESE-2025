@@ -33,7 +33,21 @@ sudo apt-get update && sudo apt-get install -y --no-install-recommends \
     libpangocairo-1.0-0 \
     libgdk-pixbuf2.0-0 \
     libffi-dev \
-    libcairo2
+    libcairo2 \
+    libnss3 \
+    libnspr4 \
+    libatk1.0-0 \
+    libatk-bridge2.0-0 \
+    libcups2 \
+    libdbus-1-3 \
+    libdrm2 \
+    libgbm1 \
+    libxkbcommon0 \
+    libxcomposite1 \
+    libxdamage1 \
+    libxfixes3 \
+    libxrandr2 \
+    libasound2
 
 fc-cache -f
 python3 -m pip install --user --break-system-packages weasyprint
